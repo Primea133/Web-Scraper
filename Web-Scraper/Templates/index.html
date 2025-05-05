@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <title>Scraped tooted</title>
+    <style>
+        .form-inline {
+            display: inline;
+        }
+
+        .table1 {
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .table1 th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .table1 th {
+            background-color: #f2f2f2;
+        }
+        .table1 tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .table1 tr:hover {
+            background-color: #ddd;
+        }
+
+        .table2 th {
+            background-color: #f2f2f2;
+        }
+        .table2 th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .table2 tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>-Tooted-</h1>
+
+    <!-- Otsing avamisaja järgi -->
+    <table class="table2">
+        <tbody>
+            <tr>
+                <td>
+                    <form action="/filter" method="get">
+                        <label for="min_price">Toote minimaalne väärtus:</label>
+                        <input type="number" id="min_price" name="min_price" step="0.01" placeholder="Min hind">
+                        <button type="submit">Filtreeri</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="http://127.0.0.1:5001/">
+                        <button type="submit">Puhasta</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!-- Kohvikute nimekiri -->
+    {% if min_price %}
+        <h1>Hinna filter: {{ min_price }} </h1>
+    {% else %}
+        <h1>Toodete nimekiri</h1>
+    {% endif %}
+    
+    <table class="table1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Hind</th>
+                <th>Ladu</th>
+                <th>Pilt</th>
+                <th>GroupID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tooted in riistad %}
+            <tr>
+                <td>{{ tooted.Name }}</td>
+                <td>{{ tooted.Price }}</td>
+                <td>{{ tooted.Stock }}</td>
+                <td><img src="{{ tooted.image_href }}" width="100"></td>
+                <td>{{ tooted.groupID }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
